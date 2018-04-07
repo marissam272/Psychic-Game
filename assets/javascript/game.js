@@ -21,6 +21,7 @@
     
     for (guesses = 9; guesses > 0; ) {
 
+        // only some letters/guesses print...
         if(userGuess === randomLetter){
             wins++;
             document.getElementById("wins").innerHTML = "wins: " + wins;
@@ -40,6 +41,7 @@
             }
         }
 
+        // not sure if this or document.getElementById is better...
 // var html =
 //           "<h1>Psychic game" + "</h1>" +
 //           "<p>You chose: " + userGuess + "</p>" +
@@ -52,6 +54,8 @@
 //           // Set the inner HTML contents of the #game div to our html string
 //         document.querySelector("#updates").innerHTML = html;
 
+
+// should this be in beginning/elsewhere? another way to write this in general?
         var reset = function(){
       guessesLeft = 9;
       guessed = [];
