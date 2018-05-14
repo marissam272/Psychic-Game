@@ -1,62 +1,68 @@
-        var alphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
-
-        var randomLetter = alphabet[Math.floor(Math.random() * alphabet.length)];
-
-        var losses = 0;
-
-        var wins = 0; 
-
-        var guessed = [];
-
-        var guesses;
-
-        var guessesLeft = 9;
-
-        alert("Pick a letter!");
+// Creates an array that lists out all of the options that the  computer could use.
+var computerChoices = ["a", "b", "c", "d", "e","f", "g", "h", "i", "j", "k", "l", "m",
+"n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+// Creating global variables to hold the number of wins, losses. They start at 0. also a downward counter for guesses left
+    var wins = 0;
+    var losses = 0;
+    var guessesLeft = 15;
+    var guesses = 9;
+    var guessedLetters = [];
+    var lettersToGuess = null;
 
 
-
-        document.onkeyup = function(event) {
-        var userGuess = event.keyCode;
-    
-    for (guesses = 9; guesses > 0; ) {
-
-        // only some letters/guesses print...
-        if(userGuess === randomLetter){
-            wins++;
-            document.getElementById("wins").innerHTML = "wins: " + wins;
-        } else if (guesses === 0) {
-            losses++;
-            document.getElementById("losses").innerHTML = "losses: " + losses;
-            } else {
-                prompt("Pick a letter!");
-                guesses--;
-                document.getElementById("guesses").innerHTML = "Guesses Left: " + guesses;
-            }
-                
-                function myFunction() {
-                guessed.push(userGuess);
-                }  
- 
-            }
-        }
-
-        // not sure if this or document.getElementById is better...
-// var html =
-//           "<h1>Psychic game" + "</h1>" +
-//           "<p>You chose: " + userGuess + "</p>" +
-//           "<p>The computer chose: " + computerGuess + "</p>" +
-//           "<p>wins: " + wins + "</p>" +
-//           "<p>losses: " + losses + "</p>" +
-//           "<p>Guesses Left: " + guessesLeft + "</p>" +
-//           "<p>Your guesses so far: " + userGuess + "</p>";
-        
-//           // Set the inner HTML contents of the #game div to our html string
-//         document.querySelector("#updates").innerHTML = html;
+// Randomly chooses a choice from the computerChoice array. This is the Computer's guess.
+var computerGuess = computerChoices[Math.floor(Math.random() * computerChoices.length)];
 
 
-// should this be in beginning/elsewhere? another way to write this in general?
-        var reset = function(){
-      guessesLeft = 9;
-      guessed = [];
+// --------------------need to allow user 9 guesses------------------------------------
+var updateGuessesLeft = function(){
+  document.querySelector("#guessesLeft").innerText = "Guesses Left: " + guessesLeft;
+};
+
+var updateLetterToGuess = function() {
+      this.letterToGuess = this.computerChoices[Math.floor(Math.random() * this.computerChoices.length)];
+};
+
+var updateGuessesSoFar = function() {
+  //display the letters that the user has tried
+  document.querySelector("#sofar").innerHTML = "Your Guesses so far: " + guessedLetters.join(', ');
+};
+
+var reset = function(){
+
+  guessesLeft = 15;
+  totalGuesses = 9;
+  guessedLetters = [];
+
+  updateLetterToGuess();
+  updateGuessesLeft();
+  updateGuessesSoFar();
+}
+
+updateLetterToGuess();
+updateGuessesLeft();
+//----------------------onkeyup section----------------------------------
+// This function is run whenever the user presses a key.
+document.onkeyup = function(event) {
+  guessesLeft--;
+  // Captures the key press, converts it to lowercase, and saves it to a variable.
+  var userGuess = String.fromCharCode(event.keyCode).toLowerCase();
+
+  guessedLetters.push(userGuess);
+  updateGuessesLeft();
+  updateGuessesSoFar();
+
+  if(guessesLeft > 0){
+    if(userGuess === letterToGuess){
+      wins++;
+      document.querySelector('#wins').innerHTML = "Wins: " + wins;
+      alert("Psychic powers to the 10th power!");
+      reset();
     }
+  }else if(guessesLeft === 0) {
+      losses++;
+      document.querySelector('#losses').innerHTML = "Losses: " + losses;
+      alert("Game Over");
+      reset();
+  }
+};
